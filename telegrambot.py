@@ -53,9 +53,11 @@ def handle_message(message_text, chat_id, waiting_for_input):
             return True
         elif message_text.lower() == 'ayuda':
             send_message(chat_id, 'Las opciones disponibles son: \n'
-                                  'A) Agregar palabras clave, es decir Emails que contengan alguna de las frases guardadas seran mas importantes \n'
+                                  'A) Agregar palabras clave, es decir Emails que contengan alguna de las frases guardadas seran mas importantes \nEn caso de enviar mas de una palabra o frase hacerlo seoarado por comas\nPor ej: Futbol,Frases del dia,Gatitos'
                                   'B) Evitar spam, es decir agregar direcciones de correo de las cuales no se quieren recibir resumenes \n'
-                                  'C) Agregar remitentes importantes, es decir direcciones de correo en las cuales se quieren recibir resumenes en el momento ocurrido \n')
+                                  'C) Agregar remitentes importantes, es decir direcciones de correo en las cuales se quieren recibir resumenes en el momento ocurrido \n'
+                                    'D) Agregar remitentes rechazables, es decir direcciones de correo de las cuales no te interesa recibir mails \n'
+                                  'E) Enviar resumen de correos \n')
         elif message_text == 'a' or message_text == 'A':
             send_message(chat_id, 'Escriba la frase o la palabra clave:\n' )
             option= 'a'
@@ -81,21 +83,46 @@ def is_valid_email(email):
 
 
 def handle_option(message_text, chat_id, option):
+    users = lista.parse_json('users.json')
     #handels each option recieven the text and sending another message according to it
     if option == 'a':
         send_message(chat_id, 'Agregando palabra clave: '+ message_text)
+        keywords = message_text.split(',')
+        for user in users:
+            if user["chat_id"] == chat_id:
+                for keyword in keywords:
+                    user["keywords"].append(keyword)
+                lista.save_json(users, 'users.json')
+                break
     elif option == 'b':
-        if not is_valid_email(message_text):
-            send_message(chat_id, 'No es una direccion de correo valida. Envie devuelta por favor')
-            return True
+        spam= message_text.split(',')
+        for user in users:
+            if user["chat_id"] == chat_id:
+                for sp in spam:
+                    user["reject_senders"].append(sp)
+                lista.save_json(users, 'users.json')
+                break
         send_message(chat_id, 'Agregando direccion de correo a la lista de spam: '+ message_text)
     elif option == 'c':
         if not is_valid_email(message_text):
             send_message(chat_id, 'No es una direccion de correo valida.  Envie devuelta por favor')
             return True
+        priority_senders = message_text.split(',')
+        for user in users:
+            if user["chat_id"] == chat_id:
+                for senders in priority_senders:
+                    user["priority_senders"].append(senders)
+                lista.save_json(users, 'users.json')
         send_message(chat_id, 'Agregando direccion de correo a la lista de remitentes importantes: '+ message_text)
+    elif option == 'd':
+        spam_users= message_text.split(',')
+        for user in users:
+            if user["chat_id"] == chat_id:
+                for sp in spam_users:
+                    user["reject_senders"].append(sp)
+                lista.save_json(users, 'users.json')
+                break
     elif option == 'start':
-        users = lista.parse_json('users.json')
         gmail = message_text.split(' ')[0]
         password = message_text.split(' ')[1]
         if not is_valid_email(gmail):
