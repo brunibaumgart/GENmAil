@@ -1,6 +1,7 @@
 import requests
 import json
-
+import re
+import io
 
 TOKEN = '6259751667:AAG8OVuM_5rzbfndPPw1vM1Z5bNHAi7oA0U'
 URL = f'https://api.telegram.org/bot{TOKEN}/'
@@ -21,14 +22,35 @@ def send_message(chat_id, text):
 
 user_prefs = {}
 
+def output_sender(chat_id):
+    send_message(chat_id, 'Resumen de correos:\n')
+    with io.open('output.txt', encoding="utf8") as f:
+        content = f.read()
+    byte_count = 0
+    message_chunks = ""
+    messages = content.split('Asunto: ')[1:]
+    for message in messages:
+        # Add the starter of the message back to the beginning of each chunk
+        byte_count+= len(message)+len('Asunto: ')+1
+        if not byte_count > 4000:
+            message_chunks += f'Asunto: {message}\n'
+        else:
+            send_message(chat_id, message_chunks+'\n')
+            message_chunks = f'Asunto: {message}\n'
+            byte_count = len(message)+len('Asunto: ')+1
+    send_message(chat_id, message_chunks+'\n')
+
 def handle_message(message_text, chat_id, waiting_for_input):
     #global cant that updates everytime it enters here
     global option
     if not waiting_for_input:
 
         if message_text == '/start':
-            send_message(chat_id, '¡Bienvenido! Envíe ayuda para ver las opciones disponibles.')
-        elif message_text == 'ayuda':
+            send_message(chat_id, '¡Bienvenido! Ahora le voy a solicitar que complete el siguiente formulario/me de sus credenciales.\n'
+                                  'Primero necesito su cuenta de gmail y seguido por un espacio su contraseña.\n')
+            option='start'
+            return True
+        elif message_text.lower() == 'ayuda':
             send_message(chat_id, 'Las opciones disponibles son: \n'
                                   'A) Agregar palabras clave, es decir Emails que contengan alguna de las frases guardadas seran mas importantes \n'
                                   'B) Evitar spam, es decir agregar direcciones de correo de las cuales no se quieren recibir resumenes \n'
@@ -45,8 +67,43 @@ def handle_message(message_text, chat_id, waiting_for_input):
             send_message(chat_id, 'Escriba la direccion de correo de la cual desea recibir resumenes en el momento ocurrido:\n' )
             option = 'c'
             return True
+        elif message_text.lower() == 'out':
+            output_sender(chat_id)
+
         else:
             send_message(chat_id, 'No entiendo lo que quiere decir. Envíe ayuda para ver las opciones disponibles.')
+
+
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(pattern, email))
+
+
+def handle_option(message_text, chat_id, option):
+    #handels each option recieven the text and sending another message according to it
+    if option == 'a':
+        send_message(chat_id, 'Agregando palabra clave: '+ message_text)
+    elif option == 'b':
+        if not is_valid_email(message_text):
+            send_message(chat_id, 'No es una direccion de correo valida. Envie devuelta por favor')
+            return True
+        send_message(chat_id, 'Agregando direccion de correo a la lista de spam: '+ message_text)
+    elif option == 'c':
+        if not is_valid_email(message_text):
+            send_message(chat_id, 'No es una direccion de correo valida.  Envie devuelta por favor')
+            return True
+        send_message(chat_id, 'Agregando direccion de correo a la lista de remitentes importantes: '+ message_text)
+    elif option == 'start':
+        gmail = message_text.split(' ')[0]
+        password = message_text.split(' ')[1]
+        if not is_valid_email(gmail):
+            send_message(chat_id, 'No es una direccion de correo valida. Enviar devuelta ambos')
+            return True
+        send_message(chat_id, 'Cuenta de gmail: '+ gmail)
+        send_message(chat_id, 'Contraseña: ' + password)
+    else:
+        send_message(chat_id, 'No entiendo lo que quiere decir. Envíe ayuda para ver las opciones disponibles.')
+
 
 def main():
     global option
@@ -63,8 +120,9 @@ def main():
                     if not waiting_for_input:
                         waiting_for_input = handle_message(message_text, chat_id, waiting_for_input)
                     else:
+                        waiting_for_input = handle_option(message_text, chat_id, option)
                         send_message(chat_id, f'Recibido: {message_text} de la opcion {option}')
-                        waiting_for_input = False
+
 
 if __name__ == '__main__':
     main()
