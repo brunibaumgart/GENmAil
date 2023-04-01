@@ -59,9 +59,16 @@ try:
                     subject = header['value']
 
             #create a list of senders to ignore. Incluide Google and linkedin.
-            ignore = ['Google', 'LinkedIn']
+            #setear una variable ignore que se setee con el valor que hay en la sexta posicion para cada renglon en el archivo messi.txt
+            # cada renglon es de este estilo ["bbaumgart@itba.edu.ar", "messichiquito1812",["Futbol","Messi chiquito","Traba feo","Reunion HCI","HCI"],["germantarnoski16@gmail.com","nsuarezdurrels@itba.edu.ar"],["Oferta laboral,"Trabajo","Hola soy german"],["mperotti@itba.edu.ar"]["fbotti@itba.edu.ar"]]
+            
+            ignore = []
+            with open("messi.txt", "r") as f:
+                for line in f:
+                    ignore.append(line[5])
+
             #if sender contains any of the words in the ignore list, continue to the next email.
-            if any(x in sender for x in ignore):
+            if any(word in sender for word in ignore):
                 continue
 
 
