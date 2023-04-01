@@ -1,7 +1,8 @@
 import requests
-import json
+import lista
 import re
 import io
+import json
 
 TOKEN = '6259751667:AAG8OVuM_5rzbfndPPw1vM1Z5bNHAi7oA0U'
 URL = f'https://api.telegram.org/bot{TOKEN}/'
@@ -94,11 +95,31 @@ def handle_option(message_text, chat_id, option):
             return True
         send_message(chat_id, 'Agregando direccion de correo a la lista de remitentes importantes: '+ message_text)
     elif option == 'start':
+        users = lista.parse_json('users.json')
         gmail = message_text.split(' ')[0]
         password = message_text.split(' ')[1]
         if not is_valid_email(gmail):
             send_message(chat_id, 'No es una direccion de correo valida. Enviar devuelta ambos')
             return True
+        else:
+            for user in users:
+                if user["email"] == gmail:
+                    # Si el correo electrónico ya existe, mostramos un mensaje de error al usuario
+                    print(f"Ya existe un usuario con correo electrónico '{gmail}'.")
+                    break
+                else:
+                    new_user = {
+                        "chat_id": chat_id,
+                        "email": gmail,
+                        "password": password if password else None,
+                        "keywords": [],
+                        "priority_senders": [],
+                        "reject_keywords": [],
+                        "reject_senders": [],
+                        "favorite_contact": []
+                    }
+                    users.append(new_user)
+                    lista.save_json(users, 'users.json')
         send_message(chat_id, 'Cuenta de gmail: '+ gmail)
         send_message(chat_id, 'Contraseña: ' + password)
     else:

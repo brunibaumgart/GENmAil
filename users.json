@@ -1,5 +1,6 @@
 [
     {
+        "chat_id": "",
         "email": "bbaumgart@itba.edu.ar",
         "password": "messichiquito1812",
         "keywords": ["Futbol", "Messi chiquito", "Traba feo", "Reunion HCI", "HCI"],
@@ -9,6 +10,7 @@
         "favorite_contact": ["fbotti@itba.edu.ar"]
     },
     {
+        "chat_id": "",
         "email": "germantarnoski16@gmail.com",
         "password": "P4ssw0rd!",
         "keywords": ["Programación", "Inteligencia Artificial", "Aprendizaje Automático", "Redes Neuronales"],
@@ -18,6 +20,7 @@
         "favorite_contact": ["jimmy@startup.com"]
     },
     {
+        "chat_id": "",
         "email": "nsuarezdurrels@itba.edu.ar",
         "password": "B3stP@ssw0rd",
         "keywords": ["Investigación", "Proyecto Final", "Desarrollo de Software", "Tesis", "Lenguajes de Programación"],
