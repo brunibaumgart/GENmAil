@@ -74,11 +74,11 @@ try:
                 for part in payload['parts']:
                     if part['mimeType'] == 'text/plain':
                         body = urlsafe_b64decode(part['body']['data']).decode('utf-8')
-                        print(body)
                         break
             else:
                 body = urlsafe_b64decode(payload['body']['data']).decode('utf-8')
-                print(body)
+
+            string_mail += "\n\n\n" + "Remitente: " + sender + "\nAsunto: " + subject + "\n" + body
 
             try:
                 if msg['payload']['parts']:
@@ -88,7 +88,6 @@ try:
                 print('\n\n\n')
 
         #build a string object with concatenated Remitente, asunto, and body
-        string_mail += "\n\n\n" + "Remitente: " + sender + "Asunto: " + subject + body
 
 except HttpError as error:
     # TODO(developer) - Handle errors from gmail API.

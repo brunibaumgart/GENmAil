@@ -16,26 +16,21 @@ text3 = " Necesito que me digas de qué se trata, a modo de resumen. Decime solo
 input = string_mail
 
 #put all emails on a list. Each email starts with "Remitente:"
-emails = input.split("Remitente:")[1:]
+emails = string_mail.split("Remitente: ")[1:]
+
+escribir_archivo = ""
 
 #iterate over the list of emails and create a prompt for each one
 for email in emails:
-    partes_mail = email.split("\n")
-    remitente = partes_mail[0]
-    prompt = text1 + nombre + "." + text2 + remitente + text3
-    i = 0
-    for parte in partes_mail:
-        if i == 0:
-            continue
-        else:
-            prompt += parte
-        i += 1
+    #get the sender and the subject of the email
+    sender = email.split("\nAsunto: ")[0]
+    subject = email.split("\nAsunto: ")[1].split("\n")[0]
+    #get the body of the email
+    body = email.split("\nAsunto: ")[1]
+    #create the prompt
+    prompt = text1 + nombre + text2 + sender + text3 + "\nEmail: \n"+ body
+    completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
+    escribir_archivo += "\n" + completion.choices[0].text + "\n"
 
-    # completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
-
-    print(prompt)
-
-    #
-    with open("output.txt", "a") as f:
-        # f.write(completion.choices[0].text)
-        f.write(prompt)
+with open("output.txt", "w") as f:
+     f.write(escribir_archivo)
