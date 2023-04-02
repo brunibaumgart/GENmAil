@@ -1,0 +1,89 @@
+Este proyecto trata de un asistente de correo electrónico a través de Telegram en forma de chatbot, para comenzar siendo una herramienta de resumen
+de emails hasta llegar a ser un "noticiero personal" gracias a la cantidad de personalización que admite.
+
+Requisitos:
+
+Aplicación de Telegram (computadora o celular)
+Computadora con python 3.x
+	pip install openai
+	pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+
+A continuación se describen los pasos para ejecutar el testeo:
+
+Tiene que estar corriendo el programa telegrambot.py. Asegurarse que solo una maquina se encuentra corriendolo y para asegurarse el buen 
+y rapido funcionamiento deberia solo una persona interactuar con el bot a la vez, aunque no deberia haber proble…
+[9:06, 2/4/2023] El Que Lee: Este proyecto trata de un asistente de correo electrónico a través de Telegram en forma de chatbot, para comenzar siendo una herramienta de resumen
+de emails hasta llegar a ser un "noticiero personal" gracias a la cantidad de personalización que admite.
+
+Requisitos:
+
+Aplicación de Telegram (computadora o celular)
+Computadora con python 3.x
+	pip install openai
+	pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+
+A continuación se describen los pasos para ejecutar el testeo:
+
+Tiene que estar corriendo el programa telegrambot.py. Asegurarse que solo una maquina se encuentra corriendolo y para asegurarse el buen 
+y rapido funcionamiento deberia solo una persona interactuar con el bot a la vez, aunque no deberia haber problema alguno.
+No es el mismo proceso que el usuario debería hacer con el producto final .
+(debido a limitaciones por no ser una aplicación publicada y tener que autorizar de antemano
+las direcciones mail de prueba).
+De la lista de emails pueden enviarles emails de prueba para testear nuestro proyecto. La idea es que hagan de cuenta que ese es su mail corriente,
+en telegram le digan al bot este mail, puedan personalizar sus preferencias y luego recibir el resumen de los emails cuando los quieran presionando
+la tecla A.
+Aunque la idea fue tener una especie de diario que puedas especificar horarios para recibir, para este MVP decidimos concentrarnos en poder
+recibir los datos a traves de telegram y con distintas apis y nuestros propios metodos poder devolver lo que el usuario quiere.
+
+Lista de mails autorizados para el uso de este ChatBot son los siguientes:
+
+pruebahackitba1@gmail.com
+
+pruebahackitba2@gmail.com
+
+pruebahackitba3@gmail.com
+
+pruebahackitba4@gmail.com
+
+pruebahackitba5@gmail.com
+
+Contraseñas de todos: pruebaITBA123
+
+ademas se le proporcionara otro .txt con mails predefinidos que puede utilizar de ejemplo para enviarle a estas casillas y utilizar las distintas funcionalidades
+
+Para estos pasos se necesita correr el telegrambot.py en la computadora y tener la conversación con el Bot en telegram (celular o computadora).
+
+Pasos:
+	 1. Correr el TelegramBot
+
+	 2. Abrir telegram y buscar un nuevo contacto con el arroba; @GenEmail_Bot, luego enviarle /start
+
+	 3. Indicar en el bot de Telegram qué dirección de correo te pertenece.
+	   Para los objetivos de este trabajo, solo pueden utilizar las direcciones
+	   de correo electrónico previamente autorizadas. Para lograr esto se le responde al bot luego del
+	   comando /start enviandole uno de estos correos electronicos.
+
+	 4. Modificar parámetros a gusto, eligiendo entre las opciones presentadas en el menú. Primero se elige la opcion
+	   y luego se le muestra su mail con las preferencias ya elegidas (si se tienen mas cuentas de emails conectadas te muestra todas,
+	   en este MVP se pueden tener multiples cuentas pero no funciona el 100% de las veces al pedir los mails)
+	
+	 5. Pedir los mails enviando "a". En la computadora, iniciar sesión en Google cuando el programa lo solicite a través
+         del navegador, presionando "continuar" varias veces hasta que el inicio de sesión sea exitoso y se despliegue un mensaje
+	 que indique que el proceso finalizó. 
+	 
+	 6. Si se quiere repetir este proceso con otro mail se puede enviar "k", que elimina todos los datos (esto lo utilizamos para simpleza en este
+         MVP) y retomar desde el paso 3 enviando /start devuelta. También es MUY importante antes de enviar "a" de borrar el archivo "Token.json" para poder
+	 pedir correctamente el permiso a la API de google, ya que sino sigue intentando con la direccion de mail anterior.
+
+
+
+Un ejemplo:
+
+/start
+...
+pruebahackitba2@gmail.com 
+...
+A
+...(correos)
