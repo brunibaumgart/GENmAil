@@ -63,7 +63,10 @@ def modificar_cuenta(id_cuenta, **nuevos_datos):
     else:
         return False
 
-
+#function that erases datos.json and then creates a new one with only {} inside
+def reset_json():
+    with open(JSON_FILE, "w") as archivo:
+        json.dump({}, archivo)
 def obtener_cuenta(id_cuenta):
     # Devolvemos la cuenta correspondiente al ID recibido
     datos = cargar_datos()
