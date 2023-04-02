@@ -4,11 +4,18 @@ import re
 import io
 import json
 
+global person
+global chat_id
+persons = []
+
 TOKEN = '6259751667:AAG8OVuM_5rzbfndPPw1vM1Z5bNHAi7oA0U'
 URL = f'https://api.telegram.org/bot{TOKEN}/'
 
 waiting_for_input = False
 option= ''
+
+def ret_chat_id():
+    return chat_id
 def get_updates(offset=None):
     url = URL + 'getUpdates?timeout=100'
     if offset:
@@ -145,9 +152,10 @@ def handle_option(message_text, chat_id, option):
                         "reject_senders": [],
                         "favorite_contact": []
                     }
+                    persons.append(chat_id, gmail, password)
                     users.append(new_user)
                     lista.save_json(users, 'users.json')
-        send_message(chat_id, 'Cuenta de gmail: '+ gmail)
+        send_message(chat_id, 'Cuenta de gmail: ' + gmail)
         send_message(chat_id, 'Contraseña: ' + password)
     else:
         send_message(chat_id, 'No entiendo lo que quiere decir. Envíe ayuda para ver las opciones disponibles.')

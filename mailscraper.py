@@ -11,8 +11,17 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from base64 import urlsafe_b64decode
+import telegrambot
+from person import Person
 
+for person in telegrambot.persons:
+    if person.get_chat_id() == telegrambot.ret_chat_id():
+        current_person = person
+    #else:
+current_person = Person(6103329712, "germantarnoski16@gmail.com", "asdf")
 
+spam_list = current_person.get_reject_keywords()
+keywords = current_person.get_keywords()
 
 spam_list = ["glande","suic1d0","fulvont"]
 keywords = ["Futbol", "Messi chiquito", "Reunion HCI", "HCI", "Oferta laboral", "Trabajo", "Hola soy german"]
@@ -49,7 +58,7 @@ try:
     # Print the emails with the following format: "From: <sender> Subject: <subject> Body: <body>" with 3 newlines between emails.
     # If there are no emails, print a message saying so.
     # If there is an error, print the error.
-    userid = "bbaumgart@itba.edu.ar"
+    userid = current_person.get_mail()
     results = service.users().messages().list(userId=userid, labelIds=['INBOX'], maxResults=10).execute()
     messages = results.get('messages', [])
     if not messages:

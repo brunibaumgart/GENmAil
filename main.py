@@ -29,22 +29,15 @@ for email in emails:
     body = email.split("\nAsunto: ")[1]
     #create the prompt
     prompt = text1 + nombre + text2 + sender + text3 + "\nEmail: \n"+ body
-    completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
+    try:
+        completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
+    except:
+        continue
     escribir_archivo += "\n" + completion.choices[0].text + "\n"
 
 with open("output.txt", "w") as f:
      f.write(escribir_archivo)
+
 spam = ["Messi chiquito", "Futbol", "Traba feo", "Reunion HCI", "HCI", "Oferta laboral", "Trabajo", "Hola soy german"]
 #iterar por cada palabra dentrro de output.txt y checkear si esta en la lista spam, si es asi, cambiar la posicion del mail una posicion hacia arriba y anotarlo como checkeado
 #si no esta en la lista spam, anotarlo como checkeado y seguir con el siguiente mail
-
-
-
-for word in escribir_archivo:
-    if word in spam:
-        #mover el mail una posicion hacia arriba
-        #anotar como checkeado
-        continue
-    else:
-        #anotar como checkeado
-        continue
