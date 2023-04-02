@@ -38,6 +38,7 @@ for email in emails:
 with open("output.txt", "w") as f:
      f.write(escribir_archivo)
 
+
 spam = ["Messi chiquito", "Futbol", "Traba feo", "Reunion HCI", "HCI", "Oferta laboral", "Trabajo", "Hola soy german"]
 #iterar por cada palabra dentrro de output.txt y checkear si esta en la lista spam, si es asi, cambiar la posicion del mail una posicion hacia arriba y anotarlo como checkeado
 #si no esta en la lista spam, anotarlo como checkeado y seguir con el siguiente mail

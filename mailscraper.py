@@ -20,10 +20,13 @@ for person in telegrambot.persons:
     #else:
 current_person = Person(6103329712, "germantarnoski16@gmail.com", "asdf")
 
-spam_list = current_person.get_reject_keywords()
+reject_keywords = current_person.get_reject_keywords()
 keywords = current_person.get_keywords()
 
-spam_list = ["glande","suic1d0","fulvont"]
+favorite_mails = []
+reject_senders = ["shirsch@itba.edu.ar"]
+favorites_senders = ["valentinriedel2"]
+reject_keywords = ["glande", "suic1d0", "fulvont"]
 keywords = ["Futbol", "Messi chiquito", "Reunion HCI", "HCI", "Oferta laboral", "Trabajo", "Hola soy german"]
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -99,11 +102,14 @@ try:
                 body = urlsafe_b64decode(payload['body']['data']).decode('utf-8')
 
             #if any() function to check if any of the words in spam_list are present in "body". If so, skip the email and continue with the next one.
-            if any(word in body for word in spam_list):
+            if any(word in body for word in reject_keywords):
+                continue
+            if any(word in sender for word in reject_senders):
                 continue
 
-
             string_mail_aux = "\n\n\n" + "Remitente: " + sender + "\nAsunto: " + subject + "\n" + body
+            if any(word in sender for word in favorites_senders):
+                favorite_mails += string_mail_aux
             if any(word in body for word in keywords):
                 string_mail = string_mail_aux + string_mail
             else:
@@ -121,7 +127,7 @@ try:
                         print("This email has an attachment")
             except:
                 print('\n\n\n')
-
+        string_mail = favorite_mails + string_mail
         #build a string object with concatenated Remitente, asunto, and body
 
 except HttpError as error:
