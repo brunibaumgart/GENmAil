@@ -67,7 +67,7 @@ def handle_message(message_text, chat_id, waiting_for_input):
 
         if message_text == '/start':
             send_message(chat_id, '¡Bienvenido! Ahora le voy a solicitar que me de sus credenciales para poder ayudarlo con sus mails. Luego puede enviar "ayuda" para ver las diferentes personalizaciones posibles\n'
-                                  'Primero necesito su cuenta de gmail y seguido por un espacio su contraseña.\n')
+                                  'Primero necesito su cuenta de gmail \n')
             option='start'
             return True
         elif message_text.lower() == 'ayuda':
@@ -192,20 +192,15 @@ def handle_option(message_text, chat_id, option):
         if(message_text.lower() == 'exit'):
             send_message(chat_id, 'Saliendo')
             return False
-        if message_text.count(' ') != 1:
-            send_message(chat_id, 'No es una direccion de correo con contraseña valida. Enviar devuelta ambos o enviar Exit para salir de esto')
-            return True
         gmail = message_text.split(' ')[0]
-        password = message_text.split(' ')[1]
         if not is_valid_email(gmail):
-            send_message(chat_id, 'No es una direccion de correo valida. Enviar devuelta ambos')
+            send_message(chat_id, 'No es una direccion de correo valida. Enviar devuelta')
             return True
         # if not our_gmail(gmail):
         #     send_message(chat_id, 'No es una direccion de correo de las que les dimos. Enviar devuelta ambos')
         #     return True
-        json_manager.agregar_cuenta(chat_id, gmail , password)
+        json_manager.agregar_cuenta(chat_id, gmail )
         send_message(chat_id, 'Cuenta de gmail: '+ gmail)
-        send_message(chat_id, 'Contraseña: ' + password)
 
 
     elif option == 'e':

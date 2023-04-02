@@ -21,7 +21,7 @@ def guardar_datos(datos):
         json.dump(datos, archivo)
 
 
-def agregar_cuenta(chat_id, email, password):
+def agregar_cuenta(chat_id, email):
     # Generamos un nuevo ID para la cuenta
     datos = cargar_datos()
     nuevo_id = str(len(datos) + 1)
@@ -35,7 +35,7 @@ def agregar_cuenta(chat_id, email, password):
     nueva_cuenta = {
         "chat_id": chat_id,
         "email": email,
-        "password": password,
+        "password": "",
         "keywords": [],
         "priority_senders": [],
         "reject_keywords": [],
