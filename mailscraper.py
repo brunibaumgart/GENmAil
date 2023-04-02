@@ -1,7 +1,10 @@
 from __future__ import print_function
 
 import os.path
+import json
 
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -9,9 +12,14 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from base64 import urlsafe_b64decode
 
+
+
+spam_list = ["glande","suic1d0","fulvont"]
+keywords = ["Futbol", "Messi chiquito", "Reunion HCI", "HCI", "Oferta laboral", "Trabajo", "Hola soy german"]
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 string_mail = ""
+mail_list = []
 creds = None
 # The file token.json stores the user's access and refresh tokens, and is
 # created automatically when the authorization flow completes for the first
@@ -24,11 +32,15 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            'credentials.json', SCOPES)
-        creds = flow.run_local_server(port=8000)
+                'credentials.json', SCOPES)
+        creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
     with open('token.json', 'w') as token:
         token.write(creds.to_json())
+
+with open('credentials.json', 'r') as f:
+    credentials = json.load(f)
+
 
 try:
     # Call the Gmail API
@@ -37,7 +49,7 @@ try:
     # Print the emails with the following format: "From: <sender> Subject: <subject> Body: <body>" with 3 newlines between emails.
     # If there are no emails, print a message saying so.
     # If there is an error, print the error.
-    userid = "germantarnoski16@gmail.com"
+    userid = "bbaumgart@itba.edu.ar"
     results = service.users().messages().list(userId=userid, labelIds=['INBOX'], maxResults=10).execute()
     messages = results.get('messages', [])
     if not messages:
@@ -61,15 +73,7 @@ try:
             #create a list of senders to ignore. Incluide Google and linkedin.
             #setear una variable ignore que se setee con el valor que hay en la sexta posicion para cada renglon en el archivo messi.txt
             # cada renglon es de este estilo ["bbaumgart@itba.edu.ar", "messichiquito1812",["Futbol","Messi chiquito","Traba feo","Reunion HCI","HCI"],["germantarnoski16@gmail.com","nsuarezdurrels@itba.edu.ar"],["Oferta laboral,"Trabajo","Hola soy german"],["mperotti@itba.edu.ar"]["fbotti@itba.edu.ar"]]
-            
-            ignore = []
-            with open("messi.txt", "r") as f:
-                for line in f:
-                    ignore.append(line[5])
 
-            #if sender contains any of the words in the ignore list, continue to the next email.
-            if any(word in sender for word in ignore):
-                continue
 
 
 
@@ -85,12 +89,27 @@ try:
             else:
                 body = urlsafe_b64decode(payload['body']['data']).decode('utf-8')
 
-            string_mail += "\n\n\n" + "Remitente: " + sender + "\nAsunto: " + subject + "\n" + body
+            #if any() function to check if any of the words in spam_list are present in "body". If so, skip the email and continue with the next one.
+            if any(word in body for word in spam_list):
+                continue
+
+
+            string_mail_aux = "\n\n\n" + "Remitente: " + sender + "\nAsunto: " + subject + "\n" + body
+            if any(word in body for word in keywords):
+                string_mail = string_mail_aux + string_mail
+            else:
+                string_mail = string_mail + string_mail_aux
 
             try:
-                if msg['payload']['parts']:
-                    print('This email has an attachment.')
-                    print('\n\n\n')
+                #CHECK IF THERE ARE ATTACHMENTS
+                if 'parts' in payload:
+                    for part in payload['parts']:
+                        if part['filename']:
+                            print("This email has an attachment")
+                            break
+                else:
+                    if payload['filename']:
+                        print("This email has an attachment")
             except:
                 print('\n\n\n')
 
