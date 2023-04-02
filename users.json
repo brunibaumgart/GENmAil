@@ -1,0 +1,32 @@
+[
+    {
+        "chat_id": "",
+        "email": "bbaumgart@itba.edu.ar",
+        "password": "messichiquito1812",
+        "keywords": ["Futbol", "Messi chiquito", "Traba feo", "Reunion HCI", "HCI"],
+        "priority_senders": ["germantarnoski16@gmail.com", "nsuarezdurrels@itba.edu.ar"],
+        "reject_keywords": ["Oferta laboral", "Trabajo", "Hola soy german"],
+        "reject_senders": ["mperotti@itba.edu.ar", "Google", "LinkedIn"],
+        "favorite_contact": ["fbotti@itba.edu.ar"]
+    },
+    {
+        "chat_id": "",
+        "email": "germantarnoski16@gmail.com",
+        "password": "P4ssw0rd!",
+        "keywords": ["Programación", "Inteligencia Artificial", "Aprendizaje Automático", "Redes Neuronales"],
+        "priority_senders": ["miguel@company.com", "jessica@startup.com"],
+        "reject_keywords": ["Publicidad", "Marketing", "Promoción"],
+        "reject_senders": ["spam@company.com", "noreply@newsletter.com"],
+        "favorite_contact": ["jimmy@startup.com"]
+    },
+    {
+        "chat_id": "",
+        "email": "nsuarezdurrels@itba.edu.ar",
+        "password": "B3stP@ssw0rd",
+        "keywords": ["Investigación", "Proyecto Final", "Desarrollo de Software", "Tesis", "Lenguajes de Programación"],
+        "priority_senders": ["profesor@itba.edu.ar", "compañero1@itba.edu.ar"],
+        "reject_keywords": ["Vacaciones", "Playa", "Descanso"],
+        "reject_senders": ["ofertas@viajes.com", "noreply@hotel.com"],
+        "favorite_contact": ["compañero2@itba.edu.ar"]
+    }
+]
