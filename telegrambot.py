@@ -150,6 +150,9 @@ def is_valid_email(email):
 def handle_option(message_text, chat_id, option):
     #handels each option recieven the text and sending another message according to it
     if option == 'd':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         keyword = message_text.split(' ')[1]
         if not is_valid_email(gmail):
@@ -160,6 +163,9 @@ def handle_option(message_text, chat_id, option):
 
 
     elif option == 'b':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         reject_senders = message_text.split(' ')[1]
         if not is_valid_email(gmail) or not is_valid_email(reject_senders):
@@ -170,6 +176,9 @@ def handle_option(message_text, chat_id, option):
 
 
     elif option == 'c':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         favourite_address = message_text.split(' ')[1]
         if not is_valid_email(gmail):
@@ -180,8 +189,11 @@ def handle_option(message_text, chat_id, option):
 
 
     elif option == 'start':
+        if(message_text.lower() == 'exit'):
+            send_message(chat_id, 'Saliendo')
+            return False
         if message_text.count(' ') != 1:
-            send_message(chat_id, 'No es una direccion de correo con contraseña valida. Enviar devuelta ambos')
+            send_message(chat_id, 'No es una direccion de correo con contraseña valida. Enviar devuelta ambos o enviar Exit para salir de esto')
             return True
         gmail = message_text.split(' ')[0]
         password = message_text.split(' ')[1]
@@ -197,12 +209,18 @@ def handle_option(message_text, chat_id, option):
 
 
     elif option == 'e':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         keyword = message_text.split(' ')[1]
         json_manager.update_account_by_email(gmail, "keywords", keyword, False)
         send_message(chat_id, 'Eliminada palabra clave: ' + keyword)
 
     elif option == 'f':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         reject_keywords = message_text.split(' ')[1]
         if not is_valid_email(gmail):
@@ -212,6 +230,9 @@ def handle_option(message_text, chat_id, option):
         send_message(chat_id, 'Agregado palabra a evitar: ' + reject_keywords)
 
     elif option == 'g':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         reject_keywords = message_text.split(' ')[1]
         if not is_valid_email(gmail):
@@ -221,6 +242,9 @@ def handle_option(message_text, chat_id, option):
         send_message(chat_id, 'Eliminada palabra a evitar: ' + reject_keywords)
 
     elif option == 'h':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         favourite_address = message_text.split(' ')[1]
         if not is_valid_email(gmail):
@@ -230,6 +254,9 @@ def handle_option(message_text, chat_id, option):
         send_message(chat_id, 'Eliminada direccion como importante: ' + favourite_address)
 
     elif option == 'i':
+        if message_text.count(' ') != 1:
+            send_message(chat_id, 'No es input valido. Enviar devuelta ambos')
+            return True
         gmail = message_text.split(' ')[0]
         reject_senders = message_text.split(' ')[1]
         if not is_valid_email(gmail):
